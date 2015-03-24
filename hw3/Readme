@@ -1,0 +1,26 @@
+to run pig scripts use
+pig <script name>(they are run in mapreduce mode)
+
+pig q1.pig
+pig q2.pig
+pig q3.pig
+pig q4.pig
+
+
+to run hive scripts use
+hive -f <script name>
+
+hive -f q5.hive
+hive -f q6.hive
+hive -f q7.hive
+hive -f q8.hive
+hive -f q9.hive
+
+
+
+Note: I could not find the datasets in cluster.
+Hence i have run all the problems in local machine.
+
+To run above scripts in cluster might need to change paths
+in q1 to q4.pig scripts.
+
