@@ -1,0 +1,52 @@
+drop database if exists hw3 cascade;
+create database hw3;
+
+use hw3;
+drop table if exists movies;
+create table movies(movieid INT, title STRING, genre STRING) 
+    ROW FORMAT DELIMITED
+    FIELDS TERMINATED BY ':';
+
+LOAD DATA LOCAL INPATH '/home/hduser/BigData_HW/hw1/dataset1/movies.dat' OVERWRITE INTO TABLE movies;
+
+drop table if exists ratings;
+create table ratings(userid INT, movieid INT, rating INT, timestamp INT)
+    ROW FORMAT DELIMITED
+    FIELDS TERMINATED BY ':';
+
+LOAD DATA LOCAL INPATH '/home/hduser/BigData_HW/hw1/dataset1/ratings.dat' OVERWRITE INTO TABLE ratings;
+
+drop table if exists users;
+create table users(userid INT, gender STRING, age INT, occupation INT, zipcode INT)
+    ROW FORMAT DELIMITED
+    FIELDS TERMINATED BY ':';
+
+LOAD DATA LOCAL INPATH '/home/hduser/BigData_HW/hw1/dataset1/users.dat' OVERWRITE INTO TABLE users;
+
+select movies.title, movies.genre
+from movies,
+    ( select movieid
+      from
+        (select req_movies.movieid as movieid, 
+                avg(ratings.rating) as avg_rating
+         from
+            ( select movieid
+              from movies LEFT OUTER JOIN
+                 ( select distinct ratings.movieid as movieid1
+                   from ratings, users 
+                   where ratings.userid = users.userid and
+                        lower(users.userid) == "F"
+                 ) rated_movies
+              ON movies.movieid = rated_movies.movieid1
+              WHERE rated_movies.movieid1 is null and
+                    (lower(movies.genre) like '%comedy%' or lower(movies.genre) like '%drama%')
+            ) req_movies, ratings
+        where req_movies.movieid = ratings.movieid
+        group by req_movies.movieid) output
+    where avg_rating >= 4.5 and avg_rating <= 4.6
+    ) out_movies
+where out_movies.movieid = movies.movieid;
+
+
+
+

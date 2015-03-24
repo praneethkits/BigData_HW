@@ -1,0 +1,12 @@
+add jar /home/hduser/BigData_HW/hw3/hiveFormatGenre/hiveFormatGenre.jar;
+CREATE TEMPORARY FUNCTION FORMAT_GENRE as 'hiveFormatGenre';
+
+use hw3;
+drop table if exists movies;
+create table movies(movieid INT, title STRING, genre STRING)
+    ROW FORMAT DELIMITED
+    FIELDS TERMINATED BY ':';
+
+LOAD DATA LOCAL INPATH '/home/hduser/BigData_HW/hw1/dataset1/movies.dat' OVERWRITE INTO TABLE movies;
+
+select FORMAT_GENRE(genre) from movies;

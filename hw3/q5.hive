@@ -1,0 +1,38 @@
+drop database if exists hw3 cascade;
+create database hw3;
+
+use hw3;
+drop table if exists movies;
+create table movies(movieid INT, title STRING, genre STRING) 
+    ROW FORMAT DELIMITED
+    FIELDS TERMINATED BY ':';
+
+LOAD DATA LOCAL INPATH '/home/hduser/BigData_HW/hw1/dataset1/movies.dat' OVERWRITE INTO TABLE movies;
+
+drop table if exists ratings;
+create table ratings(userid INT, movieid INT, rating INT, timestamp INT)
+    ROW FORMAT DELIMITED
+    FIELDS TERMINATED BY ':';
+
+LOAD DATA LOCAL INPATH '/home/hduser/BigData_HW/hw1/dataset1/ratings.dat' OVERWRITE INTO TABLE ratings;
+
+drop table if exists users;
+create table users(userid INT, gender STRING, age INT, occupation INT, zipcode INT)
+    ROW FORMAT DELIMITED
+    FIELDS TERMINATED BY ':';
+
+LOAD DATA LOCAL INPATH '/home/hduser/BigData_HW/hw1/dataset1/users.dat' OVERWRITE INTO TABLE users;
+
+
+select title, avg_rating
+from
+    (select title, avg_rating, rank() over (partition by par_col order by avg_rating desc) as rk
+     from
+        (select 1 as par_col, movies.title as title, avg(ratings.rating) as avg_rating
+         from movies, ratings
+         where movies.movieid = ratings.movieid and
+            lower(movies.genre) like '%comedy%' group by movies.title
+        ) nested_sub_query
+    sort by avg_rating desc
+    ) sub_query
+where rk <=11;

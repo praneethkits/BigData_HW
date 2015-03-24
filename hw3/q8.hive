@@ -1,0 +1,34 @@
+create database if not exists hw3;
+use hw3;
+
+drop table if exists partition_movies;
+create table partition_movies(movieid INT, title STRING, genre STRING)
+    PARTITIONED BY (month STRING)
+    ROW FORMAT DELIMITED
+    FIELDS TERMINATED BY "\;";
+
+LOAD DATA INPATH  '/hive-partition-hw3/January.dat' INTO TABLE partition_movies  PARTITION (month='january');
+LOAD DATA INPATH  '/hive-partition-hw3/February.dat' INTO TABLE partition_movies  PARTITION (month='february');
+LOAD DATA INPATH  '/hive-partition-hw3/March.dat' INTO TABLE partition_movies  PARTITION (month='march');
+
+drop table if exists january_movies;
+create table january_movies(movieid INT, title STRING, genre STRING) 
+    ROW FORMAT DELIMITED
+    FIELDS TERMINATED BY "\;";
+
+drop table if exists february_movies;
+create table february_movies(movieid INT, title STRING, genre STRING)
+    ROW FORMAT DELIMITED
+    FIELDS TERMINATED BY "\;";
+
+drop table if exists march_movies;
+create table march_movies(movieid INT, title STRING, genre STRING)
+    ROW FORMAT DELIMITED
+    FIELDS TERMINATED BY "\;";
+
+FROM partition_movies
+INSERT OVERWRITE TABLE january_movies SELECT partition_movies.movieid, partition_movies.title, partition_movies.genre  where partition_movies.month='january';
+FROM partition_movies
+INSERT OVERWRITE TABLE february_movies SELECT partition_movies.movieid, partition_movies.title, partition_movies.genre  where partition_movies.month='february';
+FROM partition_movies
+INSERT OVERWRITE TABLE march_movies SELECT partition_movies.movieid, partition_movies.title, partition_movies.genre  where partition_movies.month='march';
