@@ -17,18 +17,19 @@ public class hiveFormatGenre extends UDF {
         try {
             String genre = input.toString();
             String genres[] = genre.split("\\|");
-            int i = 1;
             int n = genres.length;
-            while (i <= n){
-                if (i ==  n-1)
-                    retString = retString + i + ") " + genres[i-1] + " & ";
-                else if (i == n)
-                    retString = retString + i + ") " + genres[i-1] + " ";
+            int i = n;
+            while (i >= 1){
+                int k = n - i + 1;
+                if (i ==  2)
+                    retString = retString + k + ") " + genres[i-1] + " & ";
+                else if (i == 1)
+                    retString = retString + k + ") " + genres[i-1] + " ";
                 else
-                    retString = retString + i + ") " + genres[i-1] + ", ";
-                i += 1;
+                    retString = retString + k + ") " + genres[i-1] + ", ";
+                i -= 1;
             }
-            retString = retString + "pxv130830";
+            retString = retString + "pxv130830 :hive";
         } catch (Exception e) { 
             retString = "FUNCTION FAILED";
         }

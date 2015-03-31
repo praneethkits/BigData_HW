@@ -46,7 +46,3 @@ from movies,
     where avg_rating >= 4.5 and avg_rating <= 4.6
     ) out_movies
 where out_movies.movieid = movies.movieid;
-
-
-
-

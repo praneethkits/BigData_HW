@@ -11,18 +11,20 @@ public class FORMAT_GENRE extends EvalFunc<String>
         try{
             String genre = (String)input.get(0);
             String genres[] = genre.split("\\|");
-            int i = 1;
             String retString = "";
             int n = genres.length;
-            while (i <= n){
-                if (i == n-1)
-                    retString = retString + " " + i + ") " + genres[i-1].trim() + " &";
-                else if (i == n)
-                    retString = retString + " " + i + ") " + genres[i-1].trim() + " ";
+            int i = n;
+            while (i >= 1){
+                int k = n - i + 1;
+                if (i ==  2)
+                    retString = retString + k + ") " + genres[i-1].trim() + " & ";
+                else if (i == 1)
+                    retString = retString + k + ") " + genres[i-1].trim() + " ";
                 else
-                    retString = retString + " " + i + ") " + genres[i-1].trim() + ",";
-                i += 1;
+                    retString = retString + k + ") " + genres[i-1].trim() + ", ";
+                i -= 1;
             }
+
             retString = retString + "pxv130830";
             return retString;
         }catch(Exception e){

@@ -36,3 +36,13 @@ from
     sort by avg_rating desc
     ) sub_query
 where rk <=11;
+
+
+-- Alternative solution
+select movies.title as title, avg(ratings.rating) as avg_rating
+from movies, ratings
+where movies.movieid = ratings.movieid and
+      lower(movies.genre) like '%comedy%'
+group by movies.title
+order by avg_rating desc
+limit 11;

@@ -1,0 +1,9 @@
+Male::Alice::540::25
+Male::Chris::645::48
+Female::Nancy::675::15
+Female::Mary::685::17
+Male::Guna::775::24
+Male::Clarke::695::19
+Female::Ria::710::52
+Female::Zia::705::58
+Female::Rachel::715::67
