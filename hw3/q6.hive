@@ -46,3 +46,14 @@ from movies,
     where avg_rating >= 4.5 and avg_rating <= 4.6
     ) out_movies
 where out_movies.movieid = movies.movieid;
+
+--Alternative Solution.(Assuming movies rated by female users can be considered,
+-- but only male user ratings are considered for average.
+
+select movies.title, movies.genre
+from movies, ratings, users
+where movies.movieid = ratings.movieid and ratings.userid = users.userid
+    and (lower(movies.genre) like '%comedy%' or lower(movies.genre) like '%drama%')
+    and users.gender = "M"
+group by movies.title, movies.genre
+having avg(ratings.rating) >= 4.5 and avg(ratings.rating) <= 4.6;

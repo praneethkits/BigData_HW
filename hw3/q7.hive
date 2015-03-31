@@ -7,8 +7,8 @@ create table partition_movies(movieid INT, title STRING, genre STRING)
     ROW FORMAT DELIMITED
     FIELDS TERMINATED BY "\;";
 
-LOAD DATA INPATH  '/hive-partition-hw3/January.dat' INTO TABLE partition_movies  PARTITION (month='january');
-LOAD DATA INPATH  '/hive-partition-hw3/February.dat' INTO TABLE partition_movies  PARTITION (month='february');
-LOAD DATA INPATH  '/hive-partition-hw3/March.dat' INTO TABLE partition_movies  PARTITION (month='march');
+LOAD DATA LOCAL INPATH  '/home/hduser/BigData_HW/hw3/partition_dataset/January.dat' INTO TABLE partition_movies  PARTITION (month='january');
+LOAD DATA LOCAL INPATH  '/home/hduser/BigData_HW/hw3/partition_dataset/February.dat' INTO TABLE partition_movies  PARTITION (month='february');
+LOAD DATA LOCAL INPATH  '/home/hduser/BigData_HW/hw3/partition_dataset/March.dat' INTO TABLE partition_movies  PARTITION (month='march');
 
 select * from partition_movies where month='march';

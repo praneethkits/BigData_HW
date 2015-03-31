@@ -1,1 +1,2 @@
 nodetool --host csac0 status
+nodetool --host csac0 ring
