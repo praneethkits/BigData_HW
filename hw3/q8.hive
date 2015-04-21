@@ -27,8 +27,6 @@ create table march_movies(movieid INT, title STRING, genre STRING)
     FIELDS TERMINATED BY "\;";
 
 FROM partition_movies
-INSERT OVERWRITE TABLE january_movies SELECT partition_movies.movieid, partition_movies.title, partition_movies.genre  where partition_movies.month='january';
-FROM partition_movies
-INSERT OVERWRITE TABLE february_movies SELECT partition_movies.movieid, partition_movies.title, partition_movies.genre  where partition_movies.month='february';
-FROM partition_movies
+INSERT OVERWRITE TABLE january_movies SELECT partition_movies.movieid, partition_movies.title, partition_movies.genre  where partition_movies.month='january'
+INSERT OVERWRITE TABLE february_movies SELECT partition_movies.movieid, partition_movies.title, partition_movies.genre  where partition_movies.month='february'
 INSERT OVERWRITE TABLE march_movies SELECT partition_movies.movieid, partition_movies.title, partition_movies.genre  where partition_movies.month='march';

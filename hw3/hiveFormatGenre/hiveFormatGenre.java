@@ -29,7 +29,7 @@ public class hiveFormatGenre extends UDF {
                     retString = retString + k + ") " + genres[i-1] + ", ";
                 i -= 1;
             }
-            retString = retString + "pxv130830 :hive";
+            retString = retString + "sxm132831 :hive";
         } catch (Exception e) { 
             retString = "FUNCTION FAILED";
         }

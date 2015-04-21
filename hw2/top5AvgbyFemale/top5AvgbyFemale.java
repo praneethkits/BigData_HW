@@ -203,6 +203,7 @@ public class top5AvgbyFemale {
 
         job3.setMapperClass(finalMap.class);
         job3.setReducerClass(finalReducer.class);
+        job3.setNumReduceTasks(1); 
 
         job3.setInputFormatClass(TextInputFormat.class);
         job3.setOutputFormatClass(TextOutputFormat.class);
