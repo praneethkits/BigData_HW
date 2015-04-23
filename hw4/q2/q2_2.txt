@@ -1,0 +1,47 @@
+import org.apache.spark.rdd.RDD
+val ratings = sc.textFile("/hw4/dataset/ratings.dat")
+val ratingsData = ratings.map(x => x.split("::"))
+val movies = ratingsData.filter(x => (x(0).toInt == 2828 && x(2).toInt == 3)).map(x => x(1))
+movies.foreach(println)
+
+
+val similarityMatrix = sc.textFile("/hw4/dataset/ratings_similarity_matrix")
+
+def convertSimilarityMatrix(x:Array[String]): String = {
+    var s = ""
+    var i = 1
+    while ( i < x.length){
+        if ( i == 1){
+            s = x(i).split(":")(0)
+        }else{
+            s += "," + x(i).split(":")(0)
+        }
+        i = i +  1
+    }
+    s
+}
+
+val moviesData = similarityMatrix.map(x => x.replace("\t", " ").split(" ")).map(x => (x(0), convertSimilarityMatrix(x)))
+val inpMovies = movies.map(x => (x,x))
+
+val reqMovies = inpMovies.join(moviesData)
+reqMovies.foreach(x => println(x._1 + "\t" +x._2._2))
+
+var hMap:Map[String, String] = Map()
+val movieFiles = sc.textFile("/hw4/dataset/movies.dat")
+
+val md = movieFiles.map(x => x.split("::")).map(x => (x(0),x(1))).collect()
+
+var i = 0
+while (i < md.length){
+    val s = md(i)._1 + ":" + md(i)._2
+    hMap += (md(i)._1 -> s)
+    i = i+1
+}
+
+def printMovieName(x:(String, (String, String))) = {
+    print(x._1 + "\t")
+    x._2._2.split(",").foreach(y => print(hMap.get(y).getOrElse("some default") + " "))
+    println("\n")
+}
+reqMovies.foreach(x=>printMovieName(x))
