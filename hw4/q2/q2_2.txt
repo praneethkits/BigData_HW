@@ -1,3 +1,5 @@
+mahout spark-itemsimilarity --input /hw4/dataset/ratings.dat --output /ratings -id '::' -f1 3 -fc 2
+
 import org.apache.spark.rdd.RDD
 val ratings = sc.textFile("/hw4/dataset/ratings.dat")
 val ratingsData = ratings.map(x => x.split("::"))
